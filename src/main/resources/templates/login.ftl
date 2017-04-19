@@ -25,12 +25,12 @@
 
     <form class="form-signin" action="${basePath}/toLogin.html" method="POST">
         <div class="form-signin-heading text-center">
-            <h1 class="sign-title">芦洲兽药管理系统</h1>
-            <img src="${basePath}/images/login-logo.png"/>
+            <h1 class="sign-title">管理系统</h1>
+            <img src="${basePath}/images/login-logo1.png"/>
         </div>
         
         <div class="login-wrap">
-            <input type="text" name="username" id="username" class="form-control" placeholder="用户名" autofocus>
+            <input type="text" name="userName" id="username" class="form-control" placeholder="用户名" autofocus>
             <input type="password" name="password" id="password" class="form-control" placeholder="密码">
             <button class="btn btn-lg btn-login btn-block" type="submit">
                 <i class="fa fa-check"></i>
