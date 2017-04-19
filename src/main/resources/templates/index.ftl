@@ -8,7 +8,7 @@
   <meta name="author" content="ThemeBucket">
   <link rel="shortcut icon" href="#" type="image/png">
   <#include "/common/common.ftl">
-  <title>芦洲兽药管理系统</title>
+  <title>管理系统</title>
 
   <!--icheck-->
   <link href="js/iCheck/skins/minimal/minimal.css" rel="stylesheet">
@@ -84,7 +84,7 @@
                     <li>
                         <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                             <img src="images/avatar-mini.jpg" alt="" />
-                            ${USERINFO.username}
+                            ${USERINFO.userName}
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-usermenu pull-right">

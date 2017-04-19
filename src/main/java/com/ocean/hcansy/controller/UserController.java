@@ -20,6 +20,7 @@ import com.ocean.hcansy.service.UserService;
  *
  */
 @Controller
+@RequestMapping("/user")
 public class UserController {
 	
 	private final static Logger LOG = LoggerFactory.getLogger(UserController.class);
