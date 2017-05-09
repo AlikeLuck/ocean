@@ -61,6 +61,7 @@
                 <li id="menu-3" url="${basePath}/stock/index.html"><a><i class="fa fa-truck"></i> <span>库存管理</span></a></li>
                 <li id="menu-4" url="${basePath}/order/index.html"><a><i class="fa fa-shopping-cart"></i> <span>销售管理</span></a></li>
                 <li id="menu-5" url="${basePath}/report/index.html"><a><i class="fa fa-bar-chart-o"></i> <span>销售报表</span></a></li>
+                <li id="menu-6" url="${basePath}/user/index.html"><a><i class="fa fa-user"></i> <span>用户管理</span></a></li>
             </ul>
             <!--sidebar nav end-->
 

@@ -18,6 +18,8 @@ public class User {
 	
 	/** 手机号码 */
 	private String phoneNumber;
+	
+	private Integer rose;
 
 	public Long getId() {
 		return id;
@@ -49,6 +51,14 @@ public class User {
 
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
+	}
+
+	public Integer getRose() {
+		return rose;
+	}
+
+	public void setRose(Integer rose) {
+		this.rose = rose;
 	}
 	
 }
