@@ -51,4 +51,11 @@ public interface UserService {
 	 * @return
 	 */
 	int updatePassword(Long id, String newPassword);
+	
+	/**
+	 * 删除用户
+	 * @param id 用户ID
+	 * @return
+	 */
+	int delete(Long id);
 }

@@ -45,6 +45,7 @@
                                     <tr>
                                         <th>序号</th>
                                         <th>用户名</th>
+                                        <th>用户角色</th>
                                         <th>操作</th>
                                     </tr>
                                 </thead>
@@ -55,7 +56,16 @@
                                                 <td>${user_index+1}</td>
                                                 <td>${user.userName}</td>
                                                 <td>
-                                                    <a href="#updateProduct" onclick="initUpdateParam('${user.id}','${user.userName}');" data-toggle="modal" class='btn btn-success'>修改</a>
+                                                	<#if user.rose??>
+	                                                    <#if user.rose = 1> 超级管理员</#if>
+	                                                    <#if user.rose = 2> 管理员</#if>
+	                                                    <#if user.rose = 10> 用户</#if>
+	                                                    <#else> 用户
+                                                    </#if>
+                                                </td>
+                                                <td>
+                                                    <a href="#updateProduct" onclick="initUpdateParam('${user.id}','${user.userName}','${user.rose!10}');" data-toggle="modal" class='btn btn-success'>修改</a>
+                                                	<button data-dismiss='modal' onclick="deleteUser(${user.id})" class='btn btn-danger' type='button'>删除</button>
                                                 </td>
                                            </tr>
                                         </#list>
@@ -73,44 +83,30 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h4 class="modal-title">添加商品</h4>
+                        <h4 class="modal-title">添加用户</h4>
                     </div>
                     <div class="modal-body">
                         <form id="form-add" class="form-horizontal" action="#">
                             <div class="form-group">
-                                <label class="control-label col-md-4">商品名称</label>
+                                <label class="control-label col-md-4">用户姓名</label>
                                 <div class="col-md-6">
-                                    <input size="50" type="text" id="names" class="form-control">
+                                    <input size="50" type="text" id="userName" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-md-4">商品规格</label>
+                                <label class="control-label col-md-4">用户密码</label>
                                 <div class="col-md-6">
-                                    <input size="20" type="text" id="norms" class="form-control">
+                                    <input size="20" type="text" id="password" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-md-4">单位</label>
+                                <label class="control-label col-md-4">角色</label>
                                 <div class="col-md-6">
-                                    <input size="2" type="text" id="unit" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-4">进价</label>
-                                <div class="col-md-6">
-                                    <input size="8" onkeyup="checkNum(this)" id="bid" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-4">售价</label>
-                                <div class="col-md-6">
-                                    <input size="8" onkeyup="checkNum(this)" id="price" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-4">生产厂家</label>
-                                <div class="col-md-6">
-                                    <input size="30" class="form-control" id="factory">
+                                    <select class="form-control" size="1" id="rose" name="user_rose">
+                                    	<option value="10" selected="selected">用户</option>
+                                    	<option value="2">管理员</option>
+                                    	<option value="1">超级管理员</option>
+                                    </select>
                                 </div>
                             </div>
                             <div classs="col-md-12" id="add_msg" style="color: #a94442;height:20px;height:30px;text-align:center;">
@@ -131,33 +127,25 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h4 class="modal-title">修改商品信息</h4>
+                        <h4 class="modal-title">修改用户信息</h4>
                     </div>
                     <div class="modal-body">
                         <form id="form-add" class="form-horizontal" action="#">
                             <div class="form-group">
-                                <label class="control-label col-md-4">商品名称</label>
+                                <label class="control-label col-md-4">用户姓名</label>
                                 <div class="col-md-6">
                                     <input type="hidden" id="update_id">
-                                    <input size="50" type="text" id="update_names" class="form-control">
+                                    <input size="50" type="text" id="update_userName" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-md-4">商品规格</label>
+                                <label class="control-label col-md-4">角色</label>
                                 <div class="col-md-6">
-                                    <input size="20" type="text" id="update_norms" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-4">单位</label>
-                                <div class="col-md-6">
-                                    <input size="2" type="text" id="update_unit" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-4">生产厂家</label>
-                                <div class="col-md-6">
-                                    <input size="30" class="form-control" id="update_factory">
+                                    <select class="form-control" size="1" id="update_rose" name="user_rose">
+                                    	<option value="10" selected="selected">用户</option>
+                                    	<option value="2">管理员</option>
+                                    	<option value="1">超级管理员</option>
+                                    </select>
                                 </div>
                             </div>
                             <div classs="col-md-12" id="update_msg" style="color: #a94442;height:20px;height:30px;text-align:center;">
@@ -219,7 +207,7 @@ $(document).ready(function() {
      */
     var nCloneTh = document.createElement( 'th' );
     var nCloneTd = document.createElement( 'td' );
-    nCloneTd.innerHTML = '<img src="images/details_open.png">';
+    nCloneTd.innerHTML = '<img src="${basePath}/images/details_open.png">';
     nCloneTd.className = "center";
 
     $('#hidden-table-info thead tr').each( function () {
@@ -261,20 +249,17 @@ $(document).ready(function() {
     } );
     
     $("#submit-add").on("click",function(){
-        var names = $("#names").val();
-        var norms = $("#norms").val();
-        var unit = $("#unit").val();
-        var bid = $("#bid").val();
-        var price = $("#price").val();
-        var factory = $("#factory").val();
-        if(names==''||norms==''||unit==''||bid==''||price==''){
+        var userName = $("#userName").val();
+        var password = $("#password").val();
+        var rose = $("#rose").val();
+        if(userName==''||password==''||rose==''){
             $("#add_msg").html("请将信息填完整！");
             return false;
         }
         $.ajax({
             type: "POST",
             url: "${basePath}/user/insert",
-            data: {names:names,norms:norms,unit:unit,bid:bid,price:price,factory:factory},
+            data: {userName:userName, password:password, rose:rose},
             dataType: "json",
             success: function(data){
                 if(data.code==0){
@@ -288,18 +273,16 @@ $(document).ready(function() {
     });
     $("#update-add").on("click",function(){
         var id = $("#update_id").val();
-        var names = $("#update_names").val();
-        var norms = $("#update_norms").val();
-        var unit = $("#update_unit").val();
-        var factory = $("#update_factory").val();
-        if(names==''||norms==''||unit==''){
+        var userName = $("#update_userName").val();
+        var rose = $("#update_rose").val();
+        if(userName==''||rose==''){
             $("#update_msg").html("请将信息填完整！");
             return false;
         }
         $.ajax({
             type: "POST",
-            url: "${basePath}/product/updateProduct",
-            data: {id:id,names:names,norms:norms,unit:unit,factory:factory},
+            url: "${basePath}/user/update",
+            data: {id:id, userName:userName, rose:rose},
             dataType: "json",
             success: function(data){
                 if(data.code==0){
@@ -312,11 +295,11 @@ $(document).ready(function() {
         });
     });
 } );
-function updateStatus(id,status){
+function deleteUser(id){
     $.ajax({
         type: "POST",
-        url: "${basePath}/product/updateStatus",
-        data: {id:id,status:status},
+        url: "${basePath}/user/delete",
+        data: {id:id},
         dataType: "json",
         success: function(data){
             if(data.code==0){
@@ -327,12 +310,10 @@ function updateStatus(id,status){
         }
     });
 }
-function initUpdateParam(id,names,norms,unit,factory){
+function initUpdateParam(id,userName,rose){
     $("#update_id").val(id);
-    $("#update_names").val(names);
-    $("#update_norms").val(norms);
-    $("#update_unit").val(unit);
-    $("#update_factory").val(factory);
+    $("#update_userName").val(userName);
+    $("#update_rose").val(rose);
 }
 function initTable(){
     $.ajax({

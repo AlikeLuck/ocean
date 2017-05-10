@@ -45,48 +45,27 @@
                                     <tr>
                                         <th>序号</th>
                                         <th>名称</th>
-                                        <th>规格</th>
-                                        <th>单位</th>
                                         <th>进价</th>
-                                        <th>售价</th>
                                         <th>库存数量</th>
-                                        <th>生产厂家</th>
-                                        <th>状态</th>
-                                        <th>创建时间</th>
-                                        <th>修改时间</th>
                                         <th>操作</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbody">
-                                    <#if productList?exists>
-                                        <#list productList as product>
+                                    <#if goodsList?exists>
+                                        <#list goodsList as goods>
                                            <tr class='gradeA'>
-                                                <td>${product_index+1}</td>
-                                                <td>${product.names}</td>
-                                                <td>${product.norms}</td>
-                                                <td>${product.unit}</td>
-                                                <td>${product.bid}</td>
-                                                <td>${product.price}</td>
-                                                <td>${product.num}</td>
-                                                <td>${product.factory}</td>
+                                                <td>${goods_index+1}</td>
+                                                <td>${goods.goodsName}</td>
+                                                <td>${goods.price}</td>
+                                                <td>${goods.goodsNum}</td>
                                                 <td>
-                                                    <#if product.status = 1>
-                                                                                                                    上架
+                                                    <#if goods.flag = 1>
+                                                        <button data-dismiss='modal' onclick="updateStatus(${goods.id},0)" class='btn btn-danger' type='button'>下架</button>
                                                     </#if>
-                                                    <#if product.status = 0>
-                                                                                                                    下架
+                                                    <#if goods.flag = 0>
+                                                        <button data-dismiss='modal' onclick="updateStatus(${goods.id},1)" class='btn btn-success' type='button'>上架</button>
                                                     </#if>
-                                                </td>
-                                                <td>${product.createTime}</td>
-                                                <td>${product.updateTime!''}</td>
-                                                <td>
-                                                    <#if product.status = 1>
-                                                        <button data-dismiss='modal' onclick="updateStatus(${product.id},0)" class='btn btn-danger' type='button'>下架</button>
-                                                    </#if>
-                                                    <#if product.status = 0>
-                                                        <button data-dismiss='modal' onclick="updateStatus(${product.id},1)" class='btn btn-success' type='button'>上架</button>
-                                                    </#if>
-                                                    <a href="#updateProduct" onclick="initUpdateParam('${product.id}','${product.names}','${product.norms}','${product.unit}','${product.factory}');" data-toggle="modal" class='btn btn-success'>修改</a>
+                                                    <a href="#updateProduct" onclick="initUpdateParam('${goods.id}','${goods.goodsName}','${goods.price}','${goods.goodsNum}');" data-toggle="modal" class='btn btn-success'>修改</a>
                                                 </td>
                                            </tr>
                                         </#list>
@@ -280,13 +259,13 @@ $(document).ready(function() {
         if ( oTable.fnIsOpen(nTr) )
         {
             /* This row is already open - close it */
-            this.src = "images/details_open.png";
+            this.src = "${basePath}/images/details_open.png";
             oTable.fnClose( nTr );
         }
         else
         {
             /* Open this row */
-            this.src = "images/details_close.png";
+            this.src = "${basePath}/images/details_close.png";
             oTable.fnOpen( nTr, fnFormatDetails(oTable, nTr), 'details' );
         }
     } );
@@ -304,7 +283,7 @@ $(document).ready(function() {
         }
         $.ajax({
             type: "POST",
-            url: "${basePath}/product/addProduct",
+            url: "${basePath}/goods/insert",
             data: {names:names,norms:norms,unit:unit,bid:bid,price:price,factory:factory},
             dataType: "json",
             success: function(data){
@@ -329,7 +308,7 @@ $(document).ready(function() {
         }
         $.ajax({
             type: "POST",
-            url: "${basePath}/product/updateProduct",
+            url: "${basePath}/goods/update",
             data: {id:id,names:names,norms:norms,unit:unit,factory:factory},
             dataType: "json",
             success: function(data){
@@ -346,7 +325,7 @@ $(document).ready(function() {
 function updateStatus(id,status){
     $.ajax({
         type: "POST",
-        url: "${basePath}/product/updateStatus",
+        url: "${basePath}/goods/updateFlag",
         data: {id:id,status:status},
         dataType: "json",
         success: function(data){
@@ -368,7 +347,7 @@ function initUpdateParam(id,names,norms,unit,factory){
 function initTable(){
     $.ajax({
         type: "POST",
-        url: "${basePath}/product/selectAllProduct",
+        url: "${basePath}/goods/findall",
         data: null,
         dataType: "json",
         beforeSend: function(XMLHttpRequest) {

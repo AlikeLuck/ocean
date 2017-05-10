@@ -43,8 +43,8 @@ public class CommonResponse {
 	 * @param mc 返回消息及返回码枚举类。
 	 */
 	public void setMessageAndCode(MessageAndCode mc) {
-		this.setMessage(mc.getMessage());
-		this.setCode(mc.getCode());
+		this.message = mc.getMessage();
+		this.code = mc.getCode();
 	}
 	
 	/**
