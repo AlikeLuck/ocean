@@ -44,13 +44,18 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	public int update(User user) {
-		user.setPassword(Md5Utils.hash(user.getPassword()));
+//		user.setPassword(Md5Utils.hash(user.getPassword()));
 		return userMapper.update(user);
 	}
 
 	@Override
 	public int updatePassword(Long id, String newPassword) {
 		return userMapper.updatePassword(id, Md5Utils.hash(newPassword));
+	}
+
+	@Override
+	public int delete(Long id) {
+		return userMapper.delete(id);
 	}
 
 }

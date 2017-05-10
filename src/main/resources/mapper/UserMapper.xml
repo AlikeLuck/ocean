@@ -11,7 +11,7 @@
   
   <!-- 登录验证查询 -->
   <select id="login" resultMap="BaseResultMap" parameterType="com.ocean.hcansy.entity.User" >
-    SELECT * FROM users
+    SELECT * FROM hcansy_users
     WHERE user_name = #{userName} 
     	AND password = #{password} 
     limit 1
@@ -19,33 +19,33 @@
   
   <!-- 查询全部用户信息 -->
   <select id="findAll" resultMap="BaseResultMap">
-    SELECT * FROM users
+    SELECT * FROM hcansy_users
   </select>
   
   <!-- 查询单个用户信息 -->
   <select id="findOne" resultMap="BaseResultMap">
-    SELECT * FROM users WHERE id=#{id,jdbcType=BIGINT}
+    SELECT * FROM hcansy_users WHERE id=#{id,jdbcType=BIGINT}
   </select>
   
   <!-- 添加一条用户信息 -->
   <insert id="insert" parameterType="com.ocean.hcansy.entity.User" >
-    INSERT INTO users (user_name, password, phone_number, rose)
+    INSERT INTO hcansy_users (user_name, password, phone_number, rose)
     VALUES (#{userName}, #{password}, #{phoneNumber}, #{rose})
   </insert>
   
   <!-- 修改用户信息 -->
   <update id="update" parameterType="com.ocean.hcansy.entity.User">
-  	UPDATE users SET user_name=#{userName},phone_number=#{phoneNumber},rose=#{rose} WHERE id=#{id,jdbcType=BIGINT}
+  	UPDATE hcansy_users SET user_name=#{userName},phone_number=#{phoneNumber},rose=#{rose} WHERE id=#{id,jdbcType=BIGINT}
   </update>
   
   <!-- 修改用户密码 -->
   <update id="updatePassword">
-  	UPDATE users SET password=#{password} WHERE id=#{id,jdbcType=BIGINT}
+  	UPDATE hcansy_users SET password=#{password} WHERE id=#{id,jdbcType=BIGINT}
   </update>
   
   <!-- 删除用户信息 -->
   <delete id="delete" parameterType="Long">
-  	delete from users where id=#{id,jdbcType=BIGINT}
+  	delete from hcansy_users where id=#{id,jdbcType=BIGINT}
   </delete>
   
 </mapper>

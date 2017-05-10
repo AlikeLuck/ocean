@@ -28,9 +28,33 @@ public enum MessageAndCode {
 	
 	/**
 	 * message: 没有权限<br/>
-	 * code: 1005
+	 * code: 1010
 	 */
-	NO_PERMISSION("没有权限", 1005);
+	NO_PERMISSION("没有权限", 1010),
+	
+	/**
+	 * message: 查询失败<br/>
+	 * code: 2000
+	 */
+	QUERY_ERROR("查询失败", 2000),
+	
+	/**
+	 * message: 添加失败<br/>
+	 * code: 2001
+	 */
+	INSERT_ERROR("添加失败", 2001),
+	
+	/**
+	 * message: 修改失败<br/>
+	 * code: 2002
+	 */
+	UPDATE_ERROR("修改失败", 2002),
+	
+	/**
+	 * message: 删除失败<br/>
+	 * code: 2003
+	 */
+	DELETE_ERROR("删除失败", 2003);
 	
 	private String message;
 	
@@ -38,6 +62,7 @@ public enum MessageAndCode {
 	
 	private MessageAndCode(String message, Integer code){
 		this.message = message;
+		this.code = code;
 	}
 
 	public String getMessage() {

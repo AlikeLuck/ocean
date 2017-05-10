@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -15,62 +13,43 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ocean.hcansy.common.CommonResponse;
 import com.ocean.hcansy.common.MessageAndCode;
+import com.ocean.hcansy.entity.Goods;
 import com.ocean.hcansy.entity.User;
-import com.ocean.hcansy.service.UserService;
+import com.ocean.hcansy.service.GoodsService;
 
 /**
- * 用户信息控制跳转层
- * @author yunhai
+ * 商品信息控制访问层
  *
  */
 @Controller
-@RequestMapping("/user")
-public class UserController {
-	
-	private final static Logger LOG = LoggerFactory.getLogger(UserController.class);
+@RequestMapping("/goods")
+public class GoodsController {
 	
 	@Autowired
-	private UserService service;
+	private GoodsService service;
 
-	@RequestMapping("/find/all")
-	@ResponseBody
-	public CommonResponse findAll() {
-		return new CommonResponse(service.findAll());
-	}
-	
-	@RequestMapping("/login.html")
-    public String login(HttpSession session) {
-        if (session.getAttribute("USERINFO") != null) {
-            LOG.info("用户已登录，跳转到首页！");
-            return "redirect:/index.html";
-        }
-        LOG.info("进入登录页面");
-        return "login";
-    }
-	
 	@GetMapping("/index.html")
-    public String index(ModelMap map) {
-		List<User> userList = service.findAll();
-		map.addAttribute("userList", userList);
-		return "user";
+	public String index(ModelMap map) {
+		List<Goods> list = service.findAll();
+		map.addAttribute("goodsList", list);
+		return "goods";
 	}
 	
-	@RequestMapping("/find/one")
+	@RequestMapping("/findall")
 	@ResponseBody
-	public CommonResponse findOne(Long id) {
-		return new CommonResponse(service.findOne(id));
+	public CommonResponse findAll(Goods goods) {
+		CommonResponse cr = new CommonResponse(service.findAll());
+		return cr;
 	}
 	
 	@RequestMapping("/insert")
 	@ResponseBody
-	public CommonResponse insert(HttpSession session, User user) {
+	public CommonResponse insert(HttpSession session, Goods goods) {
 		CommonResponse cr = new CommonResponse();
 		User u = (User) session.getAttribute("USERINFO");
 		if(u.getRose() != null) {
-			int rose = u.getRose();
-			int addRose = user.getRose();
-			if(rose == 1 || rose < addRose) {
-				cr.setData(service.add(user));
+			if(u.getRose().intValue() == 1) {
+				cr.setData(service.insert(goods));
 				return cr;
 			}
 		}
@@ -80,14 +59,27 @@ public class UserController {
 	
 	@RequestMapping("/update")
 	@ResponseBody
-	public CommonResponse update(HttpSession session, User user) {
+	public CommonResponse update(HttpSession session, Goods goods) {
 		CommonResponse cr = new CommonResponse();
 		User u = (User) session.getAttribute("USERINFO");
 		if(u.getRose() != null) {
-			int rose = u.getRose();
-			int addRose = user.getRose();
-			if(rose == 1 || rose < addRose) {
-				cr.setData(service.update(user));
+			if(u.getRose().intValue() == 1) {
+				cr.setData(service.update(goods));
+				return cr;
+			}
+		}
+		cr.setMessageAndCode(MessageAndCode.NO_PERMISSION);
+		return cr;
+	}
+	
+	@RequestMapping("/update/flag")
+	@ResponseBody
+	public CommonResponse updateFlag(HttpSession session, Long id, Integer flag) {
+		CommonResponse cr = new CommonResponse();
+		User u = (User) session.getAttribute("USERINFO");
+		if(u.getRose() != null) {
+			if(u.getRose().intValue() == 1) {
+				cr.setData(service.updateFlag(id, flag));
 				return cr;
 			}
 		}
@@ -101,8 +93,7 @@ public class UserController {
 		CommonResponse cr = new CommonResponse();
 		User u = (User) session.getAttribute("USERINFO");
 		if(u.getRose() != null) {
-			int rose = u.getRose();
-			if(rose == 1) {
+			if(u.getRose().intValue() == 1) {
 				cr.setData(service.delete(id));
 				return cr;
 			}
