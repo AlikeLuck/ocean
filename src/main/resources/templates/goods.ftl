@@ -55,9 +55,9 @@
                                         <#list goodsList as goods>
                                            <tr class='gradeA'>
                                                 <td>${goods_index+1}</td>
-                                                <td>${goods.goodsName}</td>
-                                                <td>${goods.price}</td>
-                                                <td>${goods.goodsNum}</td>
+                                                <td>${goods.goodsName!''}</td>
+                                                <td>${goods.price!0}</td>
+                                                <td>${goods.goodsNum!0}</td>
                                                 <td>
                                                     <#if goods.flag = 1>
                                                         <button data-dismiss='modal' onclick="updateStatus(${goods.id},0)" class='btn btn-danger' type='button'>下架</button>
@@ -65,7 +65,7 @@
                                                     <#if goods.flag = 0>
                                                         <button data-dismiss='modal' onclick="updateStatus(${goods.id},1)" class='btn btn-success' type='button'>上架</button>
                                                     </#if>
-                                                    <a href="#updateProduct" onclick="initUpdateParam('${goods.id}','${goods.goodsName}','${goods.price}','${goods.goodsNum}');" data-toggle="modal" class='btn btn-success'>修改</a>
+                                                    <a href="#updateProduct" onclick="initUpdateParam('${goods.id}','${goods.goodsName!''}','${goods.price!0}','${goods.goodsNum!0}');" data-toggle="modal" class='btn btn-success'>修改</a>
                                                 </td>
                                            </tr>
                                         </#list>
@@ -90,37 +90,19 @@
                             <div class="form-group">
                                 <label class="control-label col-md-4">商品名称</label>
                                 <div class="col-md-6">
-                                    <input size="50" type="text" id="names" class="form-control">
+                                    <input size="50" type="text" id="goodsName" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-md-4">商品规格</label>
+                                <label class="control-label col-md-4">单价</label>
                                 <div class="col-md-6">
-                                    <input size="20" type="text" id="norms" class="form-control">
+                                    <input size="20" type="text" id="price" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-md-4">单位</label>
+                                <label class="control-label col-md-4">数量</label>
                                 <div class="col-md-6">
-                                    <input size="2" type="text" id="unit" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-4">进价</label>
-                                <div class="col-md-6">
-                                    <input size="8" onkeyup="checkNum(this)" id="bid" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-4">售价</label>
-                                <div class="col-md-6">
-                                    <input size="8" onkeyup="checkNum(this)" id="price" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-4">生产厂家</label>
-                                <div class="col-md-6">
-                                    <input size="30" class="form-control" id="factory">
+                                    <input size="2" type="text" id="goodsNum" class="form-control">
                                 </div>
                             </div>
                             <div classs="col-md-12" id="add_msg" style="color: #a94442;height:20px;height:30px;text-align:center;">
@@ -149,25 +131,19 @@
                                 <label class="control-label col-md-4">商品名称</label>
                                 <div class="col-md-6">
                                     <input type="hidden" id="update_id">
-                                    <input size="50" type="text" id="update_names" class="form-control">
+                                    <input size="50" type="text" id="update_goodsName" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-md-4">商品规格</label>
+                                <label class="control-label col-md-4">价格</label>
                                 <div class="col-md-6">
-                                    <input size="20" type="text" id="update_norms" class="form-control">
+                                    <input size="20" type="text" id="update_price" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-md-4">单位</label>
+                                <label class="control-label col-md-4">数量</label>
                                 <div class="col-md-6">
-                                    <input size="2" type="text" id="update_unit" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-4">生产厂家</label>
-                                <div class="col-md-6">
-                                    <input size="30" class="form-control" id="update_factory">
+                                    <input size="2" type="text" id="update_goodsNum" class="form-control">
                                 </div>
                             </div>
                             <div classs="col-md-12" id="update_msg" style="color: #a94442;height:20px;height:30px;text-align:center;">
@@ -229,7 +205,7 @@ $(document).ready(function() {
      */
     var nCloneTh = document.createElement( 'th' );
     var nCloneTd = document.createElement( 'td' );
-    nCloneTd.innerHTML = '<img src="images/details_open.png">';
+    nCloneTd.innerHTML = '<img src="${basePath}/images/details_open.png">';
     nCloneTd.className = "center";
 
     $('#hidden-table-info thead tr').each( function () {
@@ -271,20 +247,17 @@ $(document).ready(function() {
     } );
     
     $("#submit-add").on("click",function(){
-        var names = $("#names").val();
-        var norms = $("#norms").val();
-        var unit = $("#unit").val();
-        var bid = $("#bid").val();
+        var goodsName = $("#goodsName").val();
         var price = $("#price").val();
-        var factory = $("#factory").val();
-        if(names==''||norms==''||unit==''||bid==''||price==''){
+        var goodsNum = $("#goodsNum").val();
+        if(goodsNum==''||price==''||goodsName==''){
             $("#add_msg").html("请将信息填完整！");
             return false;
         }
         $.ajax({
             type: "POST",
             url: "${basePath}/goods/insert",
-            data: {names:names,norms:norms,unit:unit,bid:bid,price:price,factory:factory},
+            data: {goodsName:goodsName, price:price, goodsNum:goodsNum},
             dataType: "json",
             success: function(data){
                 if(data.code==0){
@@ -298,18 +271,17 @@ $(document).ready(function() {
     });
     $("#update-add").on("click",function(){
         var id = $("#update_id").val();
-        var names = $("#update_names").val();
-        var norms = $("#update_norms").val();
-        var unit = $("#update_unit").val();
-        var factory = $("#update_factory").val();
-        if(names==''||norms==''||unit==''){
+        var goodsName = $("#update_goodsName").val();
+        var price = $("#update_price").val();
+        var goodsNum = $("#update_goodsNum").val();
+        if(goodsName==''||price==''||goodsNum==''){
             $("#update_msg").html("请将信息填完整！");
             return false;
         }
         $.ajax({
             type: "POST",
             url: "${basePath}/goods/update",
-            data: {id:id,names:names,norms:norms,unit:unit,factory:factory},
+            data: {id:id, goodsName:goodsName, price:price, goodsNum:goodsNum},
             dataType: "json",
             success: function(data){
                 if(data.code==0){
@@ -326,7 +298,7 @@ function updateStatus(id,status){
     $.ajax({
         type: "POST",
         url: "${basePath}/goods/updateFlag",
-        data: {id:id,status:status},
+        data: {id:id,flag:status},
         dataType: "json",
         success: function(data){
             if(data.code==0){
@@ -337,12 +309,11 @@ function updateStatus(id,status){
         }
     });
 }
-function initUpdateParam(id,names,norms,unit,factory){
+function initUpdateParam(id,goodsName,price,goodsNum){
     $("#update_id").val(id);
-    $("#update_names").val(names);
-    $("#update_norms").val(norms);
-    $("#update_unit").val(unit);
-    $("#update_factory").val(factory);
+    $("#update_goodsName").val(goodsName);
+    $("#update_price").val(price);
+    $("#update_goodsNum").val(goodsNum);
 }
 function initTable(){
     $.ajax({
